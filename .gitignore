@@ -122,3 +122,6 @@ goorm.manifest
 
 # 주차장 DB 파일
 database/DB.json
+
+# 메모
+/memo
