@@ -1,0 +1,16 @@
+{
+    "name": "parking-lot-API",
+    "version": "1.0.0",
+    "main": "app.js",
+    "scripts": {
+        "start": "nodemon app"
+    },
+    "author": "woog2roid",
+    "license": "MIT",
+    "dependencies": {
+        "axios": "^0.21.3",
+        "cors": "^2.8.5",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1"
+    }
+}
