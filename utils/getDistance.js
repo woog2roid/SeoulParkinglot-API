@@ -1,6 +1,4 @@
-function getDistance(lat1, lng1, lat2, lng2) {
-    if ((lat1 == lat2) && (lng1 == lng2)) return 0;
-
+const getDistance = (lat1, lng1, lat2, lng2) => {
     let radLat1 = Math.PI * lat1 / 180;
     let radLat2 = Math.PI * lat2 / 180;
     let theta = lng1 - lng2;
@@ -18,4 +16,4 @@ function getDistance(lat1, lng1, lat2, lng2) {
     return dist;
 }
 
-//console.log(getDistance(37.715133, 126.734086, 35.115078556, 129.041418419)/1000 + "km");
+module.exports = { getDistance };
