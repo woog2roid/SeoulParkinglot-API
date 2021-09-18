@@ -22,17 +22,17 @@ router.get('/', (req, res) => {
 		//FORM 조건에 맞는지 확인.
 		const filterByForm = data['DATA'].filter((element) => {
 			let form = true;
-			if(alwaysfree==="true") form = (form && element['pay_yn'] === 'N'); 
-			if(nightfree==="true") form = (form && element['night_free_open'] === 'Y');
-			if(satfree==="true") form = (form && element['saturday_pay_yn'] === 'N');
-			if(holidayfree==="true") form = (form && element['holiday_pay_yn'] === 'N');
+			if(alwaysfree==="true") form = (form && element['PAY_YN'] === 'N'); 
+			if(nightfree==="true") form = (form && element['NIGHT_FREE_OPEN'] === 'Y');
+			if(satfree==="true") form = (form && element['SATURDAY_PAY_YN'] === 'N');
+			if(holidayfree==="true") form = (form && element['HOLIDAY_PAY_YN'] === 'N');
 			
 			return form;	
 		});
 		
 		//DIST 조건에 맞는지 확인., lat, lng, radius
 		const result = filterByForm.filter((element) => {
-			return (getDistance(lat, lng, element['lat'], element['lng']) <= radius);
+			return (getDistance(lat, lng, element['LAT'], element['LNG']) <= radius);
 		});
 		
 		res.end(JSON.stringify(result, null, ' '));
