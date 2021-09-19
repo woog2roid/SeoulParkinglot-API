@@ -22,6 +22,8 @@ const option =
 		: undefined;
 const PORT = process.env.PORT || 3000;
 
+console.log(option);
+
 // production 모드에서는 https 서버를,
 // development 모드에서는 http 서버를 사용합니다
 option
