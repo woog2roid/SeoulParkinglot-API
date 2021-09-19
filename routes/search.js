@@ -7,8 +7,8 @@ const { getDistance } = require('../utils/getDistance');
 router.get('/', (req, res) => {
 	console.log(`${req.httpVersion} ${req.method} ${req.url}`);
 	console.log(req.query);
-	//alwaysfree, nightfree, satfree, holidayfree: FORM condition
-	//lat, lng, radius: DIST condition
+	//alwaysfree, nightfree, satfree, holidayfree: FORM CONDITION
+	//lat, lng, radius: DIST CONDITION
 	const lat = req.query.lat, lng = req.query.lng, radius = req.query.radius;
 	const alwaysfree = req.query.alwaysfree, nightfree = req.query.nightfree,
 		  satfree = req.query.satfree, holidayfree = req.query.holidayfree;
@@ -18,22 +18,39 @@ router.get('/', (req, res) => {
 
 		//json data
 		const data = JSON.parse(json);
-
-		//FORM 조건에 맞는지 확인.
-		const filterByForm = data['DATA'].filter((element) => {
+		
+		/*조건에 맞는 것들만 필터링*/
+		const filteredData = data['DATA'].filter((element) => {
 			let form = true;
 			if(alwaysfree==="true") form = (form && element['PAY_YN'] === 'N'); 
 			if(nightfree==="true") form = (form && element['NIGHT_FREE_OPEN'] === 'Y');
 			if(satfree==="true") form = (form && element['SATURDAY_PAY_YN'] === 'N');
 			if(holidayfree==="true") form = (form && element['HOLIDAY_PAY_YN'] === 'N');
 			
-			return form;	
+			let dist = (getDistance(lat, lng, element['LAT'], element['LNG']) <= radius);
+			return form && dist;
 		});
 		
-		//DIST 조건에 맞는지 확인., lat, lng, radius
-		const result = filterByForm.filter((element) => {
-			return (getDistance(lat, lng, element['LAT'], element['LNG']) <= radius);
-		});
+		/*중복되는 것들은 선으로 표현할 수 있도록 손질*/
+		let result = [];
+		for(let i=0; i<filteredData.length; i=i+1) {
+			let isUnique = true;
+			for(let j=0; j<result.length; j=j+1) {
+				//동일한 이름이 있다면, lat, lng만 받아서 LatLng배열에 추가시킬것
+				if(filteredData[i].PARKING_NAME === result[j].PARKING_NAME) {
+					isUnique = false;
+					result[j].LAT.push(filteredData[i].LAT);
+					result[j].LNG.push(filteredData[i].LNG);
+					break;
+				}
+			}
+			//동일한 이름이 없다면, result에 추가해줄 것.
+			if(isUnique) {
+				const lat=filteredData[i].LAT, lng=filteredData[i].LNG;
+				filteredData[i].LAT = [lat, ], filteredData[i].LNG = [lng, ];
+				result.push(filteredData[i]);
+			}
+		}
 		
 		res.end(JSON.stringify(result, null, ' '));
 		console.log("::FINISHED::");
