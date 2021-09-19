@@ -15,14 +15,12 @@ app.use(cors());
 const option =
 	process.env.NODE_ENV === 'production'
 		? {
-				key: fs.readFileSync(process.env.PRIVKEY),
-				cert: fs.readFileSync(process.env.CERT),
-				ca: fs.readFileSync(process.env.CA),
+				key: fs.readFileSync(process.env.PRIVKEY, "utf8"),
+				cert: fs.readFileSync(process.env.CERT, "utf8"),
+				ca: fs.readFileSync(process.env.CA, "utf8"),
 		  }
 		: undefined;
 const PORT = process.env.PORT || 3000;
-
-console.log(option);
 
 // production 모드에서는 https 서버를,
 // development 모드에서는 http 서버를 사용합니다
