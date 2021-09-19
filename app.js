@@ -15,9 +15,9 @@ app.use(cors());
 const option =
 	process.env.NODE_ENV === 'production'
 		? {
-				key: fs.readFileSync(__dirname + process.env.PRIVKEY),
-				cert: fs.readFileSync(__dirname + process.env.CERT),
-				ca: fs.readFileSync(__dirname + process.env.CA),
+				key: fs.readFileSync(process.env.PRIVKEY),
+				cert: fs.readFileSync(process.env.CERT),
+				ca: fs.readFileSync(process.env.CA),
 		  }
 		: undefined;
 const PORT = process.env.PORT || 3000;
