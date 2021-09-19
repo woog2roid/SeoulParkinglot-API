@@ -2,7 +2,8 @@ const http = require('http');
 const https = require('https');
 const express = require('express');
 const cors = require('cors');
-require('dotenv');
+const fs = require('fs');
+require('dotenv').config({ path: "./.env"});
 
 const mainRouter = require('./routes/search.js');
 
