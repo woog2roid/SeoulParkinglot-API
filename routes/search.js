@@ -7,10 +7,10 @@ const { getDistance } = require('../utils/getDistance');
 router.get('/', (req, res) => {
 	console.log(`${req.httpVersion} ${req.method} ${req.url}`);
 	console.log(req.query);
-	//alwaysfree, nightfree, satfree, holidayfree: FORM CONDITION
+	//free, nightfree, satfree, holidayfree: FORM CONDITION
 	//lat, lng, radius: DIST CONDITION
 	const lat = req.query.lat, lng = req.query.lng, radius = req.query.radius;
-	const alwaysfree = req.query.alwaysfree, nightfree = req.query.nightfree,
+	const free = req.query.free, nightfree = req.query.nightfree,
 		  satfree = req.query.satfree, holidayfree = req.query.holidayfree;
 	
 	fs.readFile('./database/DB.json', 'utf8', (error, json) => {
@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
 		/*조건에 맞는 것들만 필터링*/
 		const filteredData = data['DATA'].filter((element) => {
 			let form = true;
-			if(alwaysfree==="true") form = (form && element['PAY_YN'] === 'N'); 
+			if(free==="true") form = (form && element['PAY_YN'] === 'N'); 
 			if(nightfree==="true") form = (form && element['NIGHT_FREE_OPEN'] === 'Y');
 			if(satfree==="true") form = (form && element['SATURDAY_PAY_YN'] === 'N');
 			if(holidayfree==="true") form = (form && element['HOLIDAY_PAY_YN'] === 'N');
@@ -31,7 +31,7 @@ router.get('/', (req, res) => {
 			return form && dist;
 		});
 		
-		/*중복되는 것들은 선으로 표현할 수 있도록 손질*/
+		/*중복되는 것들은 LATLNG배열로 만들고 하나로 묶기*/
 		let result = [];
 		for(let i=0; i<filteredData.length; i=i+1) {
 			let isUnique = true;
