@@ -9,7 +9,9 @@ const mainRouter = require('./routes/search.js');
 
 const app = express();
 /*app use CORS*/
-app.use(cors());
+app.use(cors({
+	origin: ["https://woog2roid.github.io"],
+}));
 
 /* SSL option */
 const option =
