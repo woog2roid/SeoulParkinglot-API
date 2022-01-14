@@ -1,5 +1,6 @@
 const express = require('express');
 const fs = require('fs');
+require('dotenv').config({ path: "../.env"});
 
 const router = express.Router();
 const { getDistance } = require('../utils/getDistance');
@@ -13,7 +14,7 @@ router.get('/', (req, res) => {
 	const free = req.query.free, nightfree = req.query.nightfree,
 		  satfree = req.query.satfree, holidayfree = req.query.holidayfree;
 	
-	fs.readFile('./database/DB.json', 'utf8', (error, json) => {
+	fs.readFile(process.env.DATABASE, 'utf8', (error, json) => {
 		if (error) return console.log(error);
 
 		//json data
